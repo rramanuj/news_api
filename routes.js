@@ -1,5 +1,6 @@
 'use strict';
 var express     = require('express');
+
 // get an instance of the router for api routes
 var router = express.Router();
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
@@ -51,6 +52,10 @@ router.get('/', function(req, res) {
   res.json({ message: 'Welcome to the coolest API on earth!' });
 });
 
+router.route('/sports')
+.post(function(req,res){
+  userController.sports(req,res)
+})
 
 // route to return all users (GET http://localhost:8080/api/users)
 router.route('/users')
@@ -60,6 +65,8 @@ router.route('/users')
 .post(function(req,res) {
   userController.create(req,res)
 });
+
+
 router.route('/users/:id') 
 .get(function (req, res) {
   userController.findById(req,res)
@@ -71,8 +78,9 @@ router.route('/users/:id')
   userController.update(req,res)
 });
 
-
 router.route('/scores')
+.post(function(req,res) {
+  userController.getSportFromCookie(req,res)})
 .get(function(req,res) {
   userController.getAllScoresForUser(req,res)
 })
