@@ -45,9 +45,17 @@ userController.getAllScoresForUser = async function(req,res){
     //the system pulls from the API only whne the request is done!
     //Barry McGuiGan, straight from Wigan!
     var _id = req.params.id
-    var url = 'https://stream.twitter.com/1.1/statuses/filter.json?track=twitter';
+    
+    var url = 'https://newsapi.org/v2/top-headlines?country=us&category=business';
     //axios allows you to send params. justification ;).
-    let response = await axios.get(url);
+
+
+    //Via the Authorization HTTP header. Bearer optional, do not base 64 encode.
+
+    let response = await axios.get(url,
+        {headers: {
+            "Authorization" : "1276443de9e0423fb0b713dedf80ec33"
+          }})
 if (response.status == 200) {
     res.status(200).send(response.data);
 }
@@ -103,7 +111,7 @@ userController.update = function (req, res) {
 userController.authenticate = function (req,res){
     // find the user
 
-    //We're looking for a user. How do we dilineate a user? What is a user!? 
+    //We're looking for a user. How do we delineate a user? What is a user!? 
     //A user is a JSON OBJECT! An instance of a class.. Mongoose allows us to create these things.
     //And life becomes better because of it!
 
