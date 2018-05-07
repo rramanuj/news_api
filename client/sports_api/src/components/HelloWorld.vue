@@ -6,6 +6,9 @@
     <div class="hello">
     <h1>News of the World</h1>
     <h2>Free news.</h2>
+        <v-btn @click="deleteCookies()"> 
+    Reset Streams
+     </v-btn>
     </div>
 </v-flex>
 <v-layout fluid>
@@ -17,7 +20,7 @@
       <Panel title="2"/>
 </v-flex>
   <v-flex xs-2 pt-2>
-      <Panel  title="3"/>
+      <Panel title="3"/>
 </v-flex>
   <v-flex xs-2 pt-2>
       <Panel title="4"/>
@@ -41,9 +44,19 @@ export default {
   },
   data() {
     return {
-      msg: "Welcome to StreamSports!",
-      checkedNames: []
+      msg: "Welcome to StreamSports!"
     };
+  },
+  methods: {
+    async deleteCookies() {
+      this.$cookie.delete("stream1");
+      this.$cookie.delete("stream2");
+      this.$cookie.delete("stream3");
+      this.$cookie.delete("stream4");
+      this.$cookie.delete("stream5");
+      this.$cookie.delete("stream6");
+      this.$router.go(this.$router.currentRoute);
+    }
   }
 };
 </script>

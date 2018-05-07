@@ -1,16 +1,15 @@
 <template>
     <panel title='stream' class="ml-2">
-      <div v-if="cookie!=sports[this.title]">
+      <div v-if="this.$cookie.get('stream'+this.title)!=null">
         <div
       v-for="news in livefeed" 
-      :key="news.id">
-      <v-btn @click="showAll(sport.name)"
-> {{news.title}} -- {{news.publishedAt}}</v-btn></div>
+      :key="news.id"> 
+      {{news.title}} -- {{news.publishedAt}}
+        </div>
 </div>
 <div v-else>
-   
   <div v-for="sport in sports" :key="sport.name">
-     <v-btn @click="showAll(sport.name)"> 
+     <v-btn @click="createCookie(sport.name)"> 
     {{sport.name}}
      </v-btn>
 </div>
@@ -23,7 +22,6 @@ export default {
   components: {},
   data() {
     return {
-      projects: null,
       sports: [
         {
           name: "health"
@@ -40,17 +38,13 @@ export default {
         {
           name: "technology"
         },
-          {
+        {
           name: "general"
-        },
+        }
       ],
-      cookie: this.$cookie.get(this.title),
+      cookie: this.$cookie.get("stream" + this.title),
       livefeed: null,
-      timer: "",
-      chosenSport: null,
-      search: "",
-      red: "stream",
-      projectId: null
+      timer: ""
     };
   },
   created: function() {
@@ -62,17 +56,17 @@ export default {
       this.$router.push(link);
     },
     async loadData() {
-      console.log(this.cookie);
       this.livefeed = (await StreamService.getFeed({
         stream: this.title
       })).data.articles;
     },
 
-    async showAll(x) {
+    async createCookie(x) {
       await StreamService.post({
         stream: this.title,
         sport: x
       });
+      this.$router.go(this.$router.currentRoute);
     }
   },
   ready: function() {
@@ -85,21 +79,11 @@ export default {
     );
   },
   props: ["title"],
-  watch: {
-    "$route.query.search": {
-      immediate: true,
-      async handler(value) {
-        console.log(value);
-        if (value != "") {
-        }
-      }
-    }
-  },
   async mounted() {
     //do a request to the backend for all the projects
     //always .data, thats how ti returns data.
     this.livefeed = (await StreamService.getFeed({
-      stream: "1"
+      stream: this.title
     })).data.articles;
   }
 };

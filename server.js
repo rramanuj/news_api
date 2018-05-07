@@ -59,7 +59,6 @@ app.get('/', function (req, res) {
 //routes that involve our CRUD functions. 
 app.use('/api', routes);
 // use it before all route definitions, allows front end vue app to talk to localhost (chrome disabled this by default)
-//app.use(cors({origin: 'http://localhost:8080'} ));
 app.use(cors({
     origin: "http://localhost:8080/#/",
     credentials: true

@@ -25,7 +25,6 @@ userController.getAll = function (req, res) {
 }
 
 
-
 userController.create = function (req, res) {
     // create a sample user
     var username = req.body.username
@@ -48,11 +47,11 @@ userController.create = function (req, res) {
 userController.sports = function (req, res) {
     var sport = req.body.sport
     var stream = req.body.stream
-
-    console.log(stream);
+    var streamCookieName = "stream" + stream
+    console.log(streamCookieName);
     console.log(sport);
 
-    res.cookie(stream, sport)
+    res.cookie(streamCookieName, sport)
 
     res.status(200).send('cookie saved');
 }
@@ -62,8 +61,6 @@ userController.getSportFromCookie = async function (req, res) {
     //the system pulls from the API only whne the request is done!
     //Barry McGuiGan, straight from Wigan!
     console.log(req.body.stream)
-    console.log(req.cookies.stream1)
-
     var _id = req.params.id
     var stream = req.body.stream;
     var category = ""
@@ -89,7 +86,6 @@ userController.getSportFromCookie = async function (req, res) {
         default:
             category = "null"
     }
-    console.log(category)
     var url = 'https://newsapi.org/v2/top-headlines?country=us&category=' + category;
     //axios allows you to send params. justification ;).
     //Via the Authorization HTTP header. Bearer optional, do not base 64 encode.
@@ -125,27 +121,6 @@ userController.getAllScoresForUser = async function (req, res) {
         res.status(200).send(response.data);
     }
 }
-/*    http.get(url, function(res){
-        var body = '';
-    
-        res.on('data', function(chunk){
-            body += chunk;
-        });
-    
-        res.on('end', function(){
-            var fbResponse = JSON.parse(body);
-            console.log("Got a response: ", fbResponse.picture);
-        });
-    }).on('error', function(e){
-          console.log("Got an error: ", e);
-    });
-/*      params: {
-          username: _id,
-          //password: pass,
-          type: 'TEXT'
-          //...
-        } */
-//TODO: Cookies to store score variants
 
 // GETS A SINGLE USER FROM THE DATABASE
 userController.findById = function (req, res) {
