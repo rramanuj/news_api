@@ -47,41 +47,49 @@ userController.create = function (req, res) {
 
 userController.sports = function (req, res) {
     var sport = req.body.sport
+    var stream = req.body.stream
 
-    res.cookie('Third', sport)
-    res.end('Cookie saved')
+    console.log(stream);
+    console.log(sport);
+
+    res.cookie(stream, sport)
+
+    res.status(200).send('cookie saved');
 }
 
 userController.getSportFromCookie = async function (req, res) {
     //Obviously the user will have an authentication to make the request
     //the system pulls from the API only whne the request is done!
     //Barry McGuiGan, straight from Wigan!
+    console.log(req.body.stream)
+    console.log(req.cookies.stream1)
+
     var _id = req.params.id
     var stream = req.body.stream;
     var category = ""
-    switch (category) {
-        case 1:
+    switch (stream) {
+        case '1':
             category = req.cookies.stream1
             break;
-        case 2:
+        case '2':
             category = req.cookies.stream2
             break;
-        case 3:
+        case '3':
             category = req.cookies.stream3
             break;
-        case 4:
+        case '4':
             category = req.cookies.stream4
             break;
-        case 5:
+        case '5':
             category = req.cookies.stream5
             break;
-        case 6:
+        case '6':
             category = req.cookies.stream6
             break;
         default:
             category = "null"
     }
-
+    console.log(category)
     var url = 'https://newsapi.org/v2/top-headlines?country=us&category=' + category;
     //axios allows you to send params. justification ;).
     //Via the Authorization HTTP header. Bearer optional, do not base 64 encode.
